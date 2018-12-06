@@ -1,0 +1,61 @@
+   1: def tomaToken(listaToken, esperado):
+   2:     if listaToken[0] == esperado:
+   3:         listaToken[0:1] = [] # quita el token
+   4:         return 1
+   5:     else:
+   6:         return 0
+   7: def obtienePotencia(listaToken) :
+   8:  
+   9: a = obtieneNumero(listaToken)
+  10:     if tomaToken(listaToken, '^') :
+  11:         b = obtienePotencia(listaToken)
+  12:         return Arbol('^', a, b)
+  13:     else :
+  14:         return a
+  15: def obtieneProducto(listaToken) :
+  16:  
+  17: a = obtienePotencia(listaToken)
+  18:     if tomaToken(listaToken, '*') :
+  19:         b = obtieneProducto(listaToken)
+  20:         return Arbol('*', a, b)
+  21:     else :
+  22:         return a
+  23: def obtieneDivision(listaToken) :
+  24:  
+  25: a = obtieneProducto(listaToken)
+  26:     if tomaToken(listaToken, '/') :
+  27:         b = obtieneDivision(listaToken)
+  28:         return Arbol('/', a, b)
+  29:     else :
+  30:         return a
+  31:  
+  32: def obtieneSuma(listaToken) :
+  33:
+  34: a = obtieneDivision(listaToken) 
+  35:     if tomaToken(listaToken, '+') :
+  36:         b = obtieneSuma(listaToken)
+  37:         return Arbol('+', a, b)
+  38:     else :
+  39:         return a
+  40: def obtieneResta(listaToken) :
+  41:
+  42: a = obtieneSuma(listaToken) 
+  43:     if tomaToken(listaToken, '-') :
+  44:         b = obtieneResta(listaToken)
+  45:         return Arbol('-', a, b)
+  46:     else :
+  47:         return a
+  48:  
+  49: def obtieneNumero(listaToken):
+  50:     
+  51:     if tomaToken(listaToken, '(') :
+  52:         x = obtieneSuma(listaToken) # obtiene subexpresion
+  53:         tomaToken(listaToken, ')') # se come el cierre de parentesis
+  54:         return x
+  55:     else :
+  56:         x = listaToken[0]
+  57:  
+  58:     if type(x) != type(0) : return None
+  59:         listaToken[0:1] = [] # quita el token
+  60:         return Arbol(x, None, None) # devuelve una hoja sin el numero
+  61:

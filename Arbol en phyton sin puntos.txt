@@ -1,0 +1,73 @@
+ def tomaToken(listaToken, esperado):
+     if listaToken[0] == esperado:
+         listaToken[0:1] = [] # quita el token
+         return 1
+     else:
+         return 0
+def obtienePotencia(listaToken) :
+  
+ a = obtieneNumero(listaToken)
+ if tomaToken(listaToken, '^') :
+         b = obtienePotencia(listaToken)
+         return Arbol('^', a, b)
+ else :
+   
+         return a
+def obtieneProducto(listaToken) :
+  
+ a = obtienePotencia(listaToken)
+ if tomaToken(listaToken, '*') :
+         b = obtieneProducto(listaToken)
+         obtieneDivision(listatoken)
+         return Arbol('*', a, b)  
+ else :   
+    obtieneDivision(listaToken)
+         return a
+def obtieneDivision(listaToken) :
+  
+ a = obtieneProducto(listaToken)
+ if tomaToken(listaToken, '/') :
+         b = obtieneDivision(listaToken)
+         obtieneSuma(listatoken)
+         return Arbol('/', a, b)
+ else :
+     obtieneSuma(listatoken)
+     return a
+  
+def obtieneSuma(listaToken) :
+
+ a = obtieneDivision(listaToken) 
+ if tomaToken(listaToken, '+') :
+         b = obtieneSuma(listaToken)
+         obtieneResta(listaToken)
+         return Arbol('+', a, b)
+ else :
+         return a
+def obtieneResta(listaToken) :
+
+ a = obtieneSuma(listaToken) 
+ if tomaToken(listaToken, '-') :
+         b = obtieneResta(listaToken)
+         return Arbol('-', a, b)
+ else :
+         return a
+  
+def obtieneNumero(listaToken):
+     
+     if tomaToken(listaToken, '(') :
+         
+         x = obtieneProducto(listaToken) # obtiene subexpresion
+            
+         tomaToken(listaToken, ')') # se come el cierre de parentesis
+         
+         return x
+     else :
+         x = listaToken[0]
+  
+     if type(x) != type(0) : return None
+     listaToken[0:1] = [] # quita el token
+     return Arbol(x, None, None) # devuelve una hoja sin el numero
+
+Operacion= (input("Ingresa la operacion sin espacios ni parentesis. /n Operadores compatilbles: ^*/+-"))
+obtienePotencia(list(Operacion))
+
